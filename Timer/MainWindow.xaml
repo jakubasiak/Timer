@@ -1,0 +1,76 @@
+﻿<Window x:Class="Timer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Timer"
+        xmlns:m="clr-namespace:Timer.Model"
+        mc:Ignorable="d"
+        Title="Timer" Height="350" Width="525">
+    <Window.Resources>
+        <m:IntervalTimer x:Key="intervalTimer" />
+        <m:BoolToPauseResumConverter x:Key="BoolToPauseResumConverter"/>
+    </Window.Resources>
+
+
+
+    <Window.DataContext>
+        <m:IntervalTimer/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0">Work</TextBlock>
+            <TextBox Text="{Binding Path=Work, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name ="txtWork" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" Margin="5,0" Grid.Row="0" Grid.Column="1"></TextBox>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2">sek.</TextBlock>
+
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0">Rest</TextBlock>
+            <TextBox Text="{Binding Path=Rest, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name ="txtRest" VerticalAlignment="Center" HorizontalAlignment="Stretch" MinWidth="100" Margin="5,0" Grid.Row="1" Grid.Column="1"></TextBox>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="2">sek.</TextBlock>
+
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0">Loops</TextBlock>
+            <TextBox Text="{Binding Path=Loop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name ="txtLoop" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="5,0" Grid.Row="2" Grid.Column="1"></TextBox>
+
+            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="0" Margin="5,0" Command="{Binding StartTimerCommand}">Start</Button>
+            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="1" Margin="5,0" Command="{Binding PauseTimerCommand}" Content="{Binding Path=IsPaused, Mode=OneWay, Converter={StaticResource BoolToPauseResumConverter}}"/>
+            <Button VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="3" Grid.Column="2" Margin="5,0" Command="{Binding StopTimerCommand}">Stop</Button>
+
+        </Grid>
+        <Grid  Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="15">Remaining work sequence:</TextBlock>
+            <TextBlock  Text="{Binding Path=WorkSequenceCounter, Mode=OneWay}" Grid.Row="0" Grid.Column="1" Name="txtWorkCounter" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15"></TextBlock>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="15">Remaining rest sequence:</TextBlock>
+            <TextBlock  Text="{Binding Path=RestSequenceCounter, Mode=OneWay}" Grid.Row="1" Grid.Column="1" Name="txtRestCounter" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15"></TextBlock>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="15">Remaining time:</TextBlock>
+            <TextBlock  Text="{Binding Path=TimerCounterDown, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Name="txtTimer" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15"></TextBlock>
+
+        </Grid>
+        <ProgressBar Grid.Row="1" Name="prgBar" Panel.ZIndex="-1" Minimum="0" Maximum="{Binding ProgressBarMaxValue, Mode=OneWay}" Value="{Binding CurentProgressBarValue}" Background="Transparent" BorderThickness="0" Foreground="#FFC3C3C3" BorderBrush="#FFC3C3C3" />
+    </Grid>
+</Window>
